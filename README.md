@@ -7,6 +7,7 @@ This is an ADK (Agent Development Kit) agent designed to read and analyze UMLS (
 ## Files
 
 ### Main Agent
+- **`host_agent.py`** - FastAPI-based web host with REST API and interactive UI
 - **`umls_agent.py`** - Full-featured agent with comprehensive analysis
 - **`test_agent.py`** - Lightweight test agent for quick verification
 - **`MRDEF.RRF`** - The source UMLS data file (Medical Record Definitions, ~487K records)
@@ -20,6 +21,10 @@ The agent provides:
 - Number of unique medical concepts (CUIs - Concept Unique Identifiers)
 - Language and semantic type detection
 - Average records per concept
+
+✅ **Web API & Dashboard**
+- FastAPI host providing REST endpoints
+- Two-pane interactive explorer at `/ui` for searching and visualizing data
 
 ✅ **Language/Semantic Type Detection**
 - Identifies all 66+ languages and semantic types in the file
@@ -35,7 +40,12 @@ The agent provides:
 
 ## Usage
 
-### Basic Usage
+### Running the Web Interface
+```bash
+uv run python host_agent.py
+```
+
+### CLI Analysis
 ```bash
 python umls_agent.py
 ```
@@ -114,4 +124,3 @@ Possible additions:
 - Definition comparison across languages
 - Concept relationship analysis
 - Database integration
-
