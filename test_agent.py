@@ -6,7 +6,8 @@ Simple UMLS RRF File Reader Agent - Test Version
 def main():
     import os
     
-    file_path = r"C:\Users\sannidhanamsk\workspace\git_lab\adk-project\MRDEF.RRF"
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, 'MRDEF.RRF')
     
     # Check if file exists
     if not os.path.exists(file_path):
@@ -22,24 +23,23 @@ def main():
     total = 0
     
     try:
+        # Read line by line instead of loading the entire file into memory
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-            lines = f.readlines()
+            for i, line in enumerate(f):
+                if i >= 10:
+                    break
+                
+                parts = line.strip().split('|')
+                if len(parts) >= 5:
+                    cui = parts[0]
+                    lang = parts[4]
+                    languages.add(lang)
+                    if cui not in concepts:
+                        concepts[cui] = []
+                    concepts[cui].append(parts)
+                    total += 1
         
-        print(f"Total lines in file: {len(lines):,}")
-        
-        # Parse first few lines
-        for i, line in enumerate(lines[:10]):
-            parts = line.strip().split('|')
-            if len(parts) >= 5:
-                cui = parts[0]
-                lang = parts[4]
-                languages.add(lang)
-                if cui not in concepts:
-                    concepts[cui] = []
-                concepts[cui].append(parts)
-                total += 1
-        
-        print(f"\nFirst 10 records parsed successfully")
+        print(f"\nParsed first {total} records successfully")
         print(f"Unique concepts found: {len(concepts)}")
         print(f"Languages/Types found: {sorted(list(languages))}")
         
@@ -56,4 +56,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
