@@ -69,6 +69,21 @@ class UMLSAgent:
             'average_records_per_concept': round(self.total_records / max(len(self.concepts), 1), 2)
         }
     
+    def search_definitions(self, query: str, limit: int = 20) -> List[Dict]:
+        """Search for keywords within concept definitions."""
+        results = []
+        query = query.lower()
+        for cui, records in self.concepts.items():
+            for rec in records:
+                if query in rec['attribute_value'].lower():
+                    results.append({
+                        'cui': cui,
+                        'match': rec
+                    })
+                    if len(results) >= limit:
+                        return results
+        return results
+
     def get_sample_records(self, limit: int = 5) -> List[Tuple[str, List]]:
         """Get sample records from the file."""
         items = list(self.concepts.items())[:limit]
@@ -137,4 +152,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
